@@ -1,0 +1,70 @@
+{% extends 'caselookup/base.html' %}
+
+
+
+{% block content %}
+
+	{% if statewisecases_api_data %}
+	  {% if statewisecases_api_data == "Error..." %}
+	    There was an error, please try again later
+
+	  {% else %}
+	  	
+	  	</br>
+	  	</br>
+	  	</br>
+	    <table class="table">
+	  		<thead class="thead-dark">
+			    <tr>
+			      <th scope="col">States</th>
+			      <th scope="col">Death</th>
+			      <th scope="col">No. of Cases</th>
+			      <th scope="col">Cured</th>
+
+			    </tr>
+	  		</thead>
+ 			<tbody>
+ 				{% for data in statewisecases_api_data %}
+				    <tr>
+				      <td>{{data.state}}</td>
+				      <td>{{data.deaths}}</td>
+				      <td>{{data.noOfCases}}</td>
+				      <td>{{data.cured}}</td>
+				    </tr>
+		   		 {% endfor %}
+
+  			</tbody>
+		</table>
+
+		<canvas id="myChart" width="800" height="450"></canvas>
+
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+		<script>
+			var ctx = document.getElementById('myChart').getContext('2d');
+			var chart = new Chart(ctx, {
+			    // The type of chart we want to create
+			    type: 'line',
+
+			    // The data for our dataset
+			    data: {
+			        labels: {{states|safe}},
+			        datasets: [{
+			            label: 'State wise cases',
+			            backgroundColor: 'rgb(255, 99, 132)',
+			            borderColor: 'rgb(255, 99, 132)',
+			            data: {{noOfCases|safe}},
+			        }]
+			    },
+
+			    // Configuration options go here
+			    options: {}
+			});
+		</script>
+
+
+	  {% endif %}
+
+	{% endif %}
+
+{% endblock content %}

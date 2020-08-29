@@ -1,0 +1,45 @@
+{% extends 'caselookup/base.html' %}
+
+
+
+{% block content %}
+
+	{% if case_timeline_data %}
+	  {% if case_timeline_data == "Error..." %}
+	    There was an error, please try again later
+
+	  {% else %}
+
+
+	    
+		<canvas id="myChart" width="800" height="450"></canvas>
+		
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+		<script>
+			var ctx = document.getElementById('myChart').getContext('2d');
+			var chart = new Chart(ctx, {
+					    // The type of chart we want to create
+					    type: 'line',
+
+					    // The data for our dataset
+					    data: {
+					    	labels: {{dates|safe}},
+					    	datasets: [{
+					    		label: 'Weekly Cases Stats(Globally)',
+					    		backgroundColor: 'rgb(255, 99, 132)',
+					    		borderColor: 'rgb(255, 99, 132)',
+					    		data: {{cases_reported_each_day|safe}},
+					    	}]
+					    },
+
+					    // Configuration options go here
+					    options: {}
+					});
+		</script>
+
+	  {% endif %}
+
+	{% endif %}
+
+{% endblock content %}
